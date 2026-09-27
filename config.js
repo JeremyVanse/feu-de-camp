@@ -4,6 +4,6 @@
 // supabase/schema.sql qui protègent les données.
 // Laissées vides, le site tourne en mode démo avec des personnages d'exemple.
 window.FDC_CONFIG = {
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://henpzizxwwnbnrfdgehg.supabase.co/rest/v1/",
+  supabaseAnonKey: "sb_publishable_Q8aOaWnRaGLGTHdD9_Y5Cw_b6w0-0Kw",
 };
