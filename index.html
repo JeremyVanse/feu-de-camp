@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feu de Camp Forever</title>
+<meta name="description" content="Qui joue quoi pour la sortie de WoW Forever : races, classes, métiers, buffs de classe et de camping.">
+<link rel="icon" href="icons/f135805.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap">
+<style>
+:root{
+  --bg:#E6EAEE; --panel:#F8F9FA; --panel-2:#EEF1F4; --line:#C9D1D9; --ink:#17202B; --muted:#546071;
+  --gold:#855A10; --gold-soft:#F2E4C4; --ember:#B5461A; --ok:#2C7A4B; --ok-soft:#DDF0E4; --warn:#9A6200; --warn-soft:#F7EACB;
+  --bad:#B0281F; --bad-soft:#F8DEDB; --horde:#9C1C1C; --alliance:#1E4C9A; --frame:#1B1F26; --cc-mix:0%;
+  --shadow:0 1px 0 rgba(20,30,45,.06),0 6px 18px -10px rgba(20,30,45,.25);
+  --display:"Marcellus","Palatino Linotype","Book Antiqua",Georgia,serif;
+  --body:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0C1117; --panel:#141B23; --panel-2:#1A232D; --line:#2A3642; --ink:#EAE5D9; --muted:#98A3AF;
+    --gold:#E3B75A; --gold-soft:#3A2E16; --ember:#EF7B45; --ok:#5DC28C; --ok-soft:#15301F; --warn:#E8A93C; --warn-soft:#352812;
+    --bad:#F07268; --bad-soft:#3A1917; --horde:#E5574F; --alliance:#72A0EE; --frame:#05070A; --cc-mix:100%;
+    --shadow:0 1px 0 rgba(0,0,0,.4),0 8px 22px -12px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0C1117; --panel:#141B23; --panel-2:#1A232D; --line:#2A3642; --ink:#EAE5D9; --muted:#98A3AF;
+  --gold:#E3B75A; --gold-soft:#3A2E16; --ember:#EF7B45; --ok:#5DC28C; --ok-soft:#15301F; --warn:#E8A93C; --warn-soft:#352812;
+  --bad:#F07268; --bad-soft:#3A1917; --horde:#E5574F; --alliance:#72A0EE; --frame:#05070A; --cc-mix:100%;
+  --shadow:0 1px 0 rgba(0,0,0,.4),0 8px 22px -12px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+html,body{background:var(--bg);margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;letter-spacing:.01em}
+h2{font-size:1.55rem}
+h3{font-size:1.15rem}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+a{color:var(--gold)}
+
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px 24px;flex-wrap:wrap;padding-block:12px}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.brand img{width:42px;height:42px;border-radius:6px;border:1px solid var(--frame);box-shadow:0 0 0 1px var(--gold),0 0 18px -4px var(--ember)}
+.brand h1{font-size:1.6rem;line-height:1}
+.brand p{color:var(--muted);font-size:.9rem;margin-top:3px}
+.brand b{color:var(--ember);font-weight:700}
+.tabs{display:flex;gap:4px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:4px}
+.tabs button{border:0;background:none;padding:7px 14px;border-radius:7px;cursor:pointer;font-weight:700;color:var(--muted);font-size:.95rem}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
+main{padding-block:22px 48px}
+.auth{display:flex;align-items:center;gap:8px}
+.auth:empty{display:none}
+.auth .me{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.92rem}
+.auth .avatar{width:30px;height:30px}
+.btn.discord{background:#5865F2;border-color:#5865F2;color:#fff}
+.btn.sm{padding:6px 12px;font-size:.88rem}
+.banner{margin-top:16px;padding:10px 14px;border-radius:8px;background:var(--warn-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--warn) 45%,transparent);font-size:.95rem}
+.banner:empty{display:none}
+.stack{display:flex;flex-direction:column;gap:28px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;margin-bottom:12px}
+.sec-head p{color:var(--muted);font-size:.95rem;max-width:62ch}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;font-weight:800;color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+
+/* icons: framed like the game's action buttons */
+.ico{display:block;width:36px;height:36px;border-radius:5px;border:1px solid var(--frame);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);object-fit:cover;flex:none;background:var(--frame)}
+.ico.sm{width:24px;height:24px;border-radius:4px}
+.ico.lg{width:48px;height:48px;border-radius:6px}
+.ico.cls{box-shadow:0 0 0 2px var(--cc,transparent)}
+.ico.off{filter:grayscale(1) brightness(.75);opacity:.55}
+.cname{color:color-mix(in srgb,var(--cc,var(--ink)) var(--cc-mix),var(--ink))}
+
+/* summary */
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.summary > div{background:var(--panel);padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+.summary strong{font-family:var(--display);font-size:1.7rem;line-height:1.1;font-weight:400}
+.summary small{color:var(--muted);font-size:.85rem}
+.need-row{display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none}
+.dot.bad{background:var(--bad)}
+
+.issues{display:flex;flex-direction:column}
+.issue{display:flex;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
+.issue:first-child{border-top:0}
+.issue .lv{font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:5px;flex:none;min-width:70px;text-align:center}
+.lv.bad{background:var(--bad-soft);color:var(--bad)}
+.lv.warn{background:var(--warn-soft);color:var(--warn)}
+.lv.info{background:var(--panel-2);color:var(--muted)}
+.lv.ok{background:var(--ok-soft);color:var(--ok)}
+.issue .ics{display:flex;gap:4px;flex:none}
+.issue p{flex:1;min-width:0}
+
+.classrow{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:8px}
+.classrow .c{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;text-align:center}
+.classrow .c span{font-size:.82rem;font-weight:700;line-height:1.1}
+.classrow .c em{font-style:normal;font-size:.8rem;color:var(--muted)}
+.classrow .c.has em{color:var(--ink);font-weight:700}
+
+/* camp planner */
+.camp{padding:16px}
+.sockets{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.tier-label{flex-basis:100%;display:flex;align-items:center;gap:10px;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.tier-label::after{content:"";flex:1;height:1px;background:var(--line)}
+.tier-label span{color:var(--muted);letter-spacing:.02em;text-transform:none;font-weight:500}
+.socket{flex:1 1 200px;max-width:280px;display:flex;gap:10px;align-items:center;padding:10px;border-radius:9px;background:var(--panel-2);border:1px solid var(--line)}
+.socket.empty{border-style:dashed;background:none;color:var(--muted);font-size:.9rem;justify-content:center;min-height:62px}
+.socket div{min-width:0}
+.socket b{display:block;font-size:.95rem;line-height:1.2}
+.socket small{display:block;color:var(--muted);font-size:.82rem;line-height:1.25}
+.tag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:4px;background:var(--gold-soft);color:var(--gold);vertical-align:1px}
+.tag.grey{background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
+.tag.red{background:var(--bad-soft);color:var(--bad)}
+
+/* roster */
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.pc{padding:14px;display:flex;flex-direction:column;gap:12px;border-top:3px solid var(--cc,var(--line))}
+.pc.me{outline:2px solid var(--gold);outline-offset:-1px}
+.pc-id{display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;flex:none;object-fit:cover;background:var(--panel-2);display:grid;place-items:center;font-weight:800;color:var(--muted);border:1px solid var(--line)}
+.pc-id .nm{flex:1;min-width:0}
+.pc-id strong{display:block;font-family:var(--display);font-size:1.2rem;font-weight:400;line-height:1.15;overflow-wrap:anywhere}
+.pc-id small{color:var(--muted);font-size:.85rem}
+.fac{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:5px;border:1px solid currentColor;flex:none}
+.fac.H{color:var(--horde)} .fac.A{color:var(--alliance)}
+.pc-main{display:flex;align-items:center;gap:8px}
+.pc-main .txt{flex:1;min-width:0;line-height:1.25}
+.pc-main .txt b{display:block}
+.pc-main .txt span{color:var(--muted);font-size:.9rem}
+.role{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:700;padding:3px 9px 3px 3px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line);flex:none}
+.role img{width:20px;height:20px;border-radius:50%}
+.profs{display:flex;flex-wrap:wrap;gap:6px}
+.pchip{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;padding:2px 9px 2px 2px;border-radius:6px;background:var(--panel-2);border:1px solid var(--line)}
+.pchip.sec{background:none}
+.empty-state{padding:28px;text-align:center;color:var(--muted)}
+.empty-state h3{color:var(--ink);margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:8px;border:1px solid var(--gold);background:var(--gold);color:var(--panel);font-weight:800;cursor:pointer;font-size:.95rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:none;color:var(--gold)}
+.btn.danger{background:none;color:var(--bad);border-color:color-mix(in srgb,var(--bad) 50%,transparent)}
+
+/* form */
+.form{display:flex;flex-direction:column;gap:24px}
+.step{padding:18px}
+.step h3{margin-bottom:4px}
+.step > p{color:var(--muted);font-size:.93rem;margin-bottom:14px}
+.factions{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fcol h4{margin:0 0 8px;display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:400;font-size:1.05rem}
+.fcol.A h4{color:var(--alliance)} .fcol.H h4{color:var(--horde)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.tile{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);cursor:pointer;text-align:left;min-height:52px;line-height:1.15;font-weight:700;font-size:.92rem;transition:border-color .15s,background .15s}
+.tile:hover{border-color:var(--muted)}
+.tile.dim{opacity:.45}
+.tile.dim:hover{opacity:.8}
+.tile[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold)}
+.tile small{display:block;font-weight:500;color:var(--muted);font-size:.78rem}
+.tile.wide{min-height:64px}
+.racials{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 18px;padding:12px 14px;border-radius:8px;background:var(--panel-2);font-size:.9rem}
+.racials b{display:block}
+.racials span{color:var(--muted)}
+.field{display:flex;flex-direction:column;gap:6px;max-width:360px}
+.field label{font-weight:700;font-size:.9rem}
+.field input,.field select{font:inherit;padding:9px 11px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink)}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.savebar{position:sticky;bottom:0;z-index:5;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;border-radius:12px 12px 0 0}
+.savebar .recap{flex:1;min-width:200px;display:flex;align-items:center;gap:10px}
+.savebar .recap span{color:var(--muted);font-size:.9rem;display:block}
+.status{font-size:.9rem;font-weight:700}
+.status.ok{color:var(--ok)} .status.err{color:var(--bad)}
+
+/* buffs */
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:.92rem}
+th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.obj{display:flex;align-items:center;gap:8px;line-height:1.2}
+.obj small{display:block;color:var(--muted);font-size:.8rem}
+.lvl{font-size:.72rem;font-weight:800;color:var(--gold)}
+.who{display:flex;flex-wrap:wrap;gap:4px}
+.who span{font-size:.82rem;padding:1px 7px;border-radius:5px;background:var(--panel-2);border:1px solid var(--line)}
+.state{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:5px;white-space:nowrap}
+.state.none{background:var(--bad-soft);color:var(--bad)}
+.state.class{background:var(--ok-soft);color:var(--ok)}
+.state.camp{background:var(--gold-soft);color:var(--gold)}
+.state.both{background:var(--panel-2);color:var(--muted);border:1px solid var(--line)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.rules div{padding:14px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);font-size:.92rem}
+.rules b{display:block;font-family:var(--display);font-weight:400;font-size:1.05rem;margin-bottom:2px}
+.classes{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.ccard{padding:14px;border-top:3px solid var(--cc)}
+.ccard.absent{opacity:.72}
+.ccard header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ccard header h3{flex:1}
+.ccard header em{font-style:normal;font-size:.85rem;color:var(--muted)}
+.ccard .note{font-size:.85rem;color:var(--muted);margin:-4px 0 10px}
+.buffs{display:flex;flex-direction:column;gap:8px}
+.buff{display:flex;gap:10px;align-items:flex-start}
+.buff div{flex:1;min-width:0;line-height:1.25}
+.buff b{font-size:.95rem}
+.buff p{color:var(--muted);font-size:.86rem}
+.buff .eq{color:var(--gold);font-size:.8rem;font-weight:700;display:inline-flex;align-items:center;gap:4px;margin-top:2px}
+footer{border-top:1px solid var(--line);padding-block:18px 28px;color:var(--muted);font-size:.85rem}
+footer .wrap{display:flex;flex-direction:column;gap:4px}
+
+@media (max-width:860px){
+  .classrow{grid-template-columns:repeat(5,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .factions{grid-template-columns:1fr}
+  .classrow{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .roster,.classes{grid-template-columns:1fr}
+  .tabs{width:100%}
+  .tabs button{flex:1;padding:7px 6px}
+  .issue{flex-wrap:wrap}
+  .issue p{flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <img src="icons/f135805.webp" alt="" width="42" height="42">
+      <div>
+        <h1>Feu de Camp</h1>
+        <p>Préparation de groupe pour WoW Forever · <b id="countdown">sortie le 4 novembre 2026</b></p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" id="tabbtn-groupe" data-tab="groupe" aria-selected="true">Le groupe</button>
+      <button role="tab" id="tabbtn-perso" data-tab="perso" aria-selected="false">Mon perso</button>
+      <button role="tab" id="tabbtn-buffs" data-tab="buffs" aria-selected="false">Buffs &amp; camp</button>
+    </nav>
+    <div class="auth" id="auth"></div>
+  </div>
+</header>
+
+<div class="wrap"><div class="banner" id="banner"></div></div>
+
+<main class="wrap">
+  <section id="tab-groupe" class="stack" role="tabpanel"></section>
+  <section id="tab-perso" role="tabpanel" hidden></section>
+  <section id="tab-buffs" class="stack" role="tabpanel" hidden></section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Races et classes : <a href="https://news.blizzard.com/en-us/article/24304075/create-the-hero-you-want-to-be-in-world-of-warcraft-forever" target="_blank" rel="noopener">tableau officiel Blizzard</a>. Camping : <a href="https://www.icy-veins.com/wow-forever/camping" target="_blank" rel="noopener">guide Icy Veins</a> et <a href="https://www.warcrafttavern.com/forever/news/camping-profession-buffs-in-world-of-warcraft-forever/" target="_blank" rel="noopener">annonce Blizzard relayée par Warcraft Tavern</a>.</p>
+    <p>Données de la bêta (septembre 2026) : les valeurs et objets de camp peuvent encore changer avant la sortie. Icônes © Blizzard Entertainment.</p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js"></script>
+<script>
+/* ============ Données du jeu ============ */
+const CLASSES = [
+  {id:'warrior', n:'Guerrier',  c:'#C69B6D', ic:'classicon_warrior.jpg', roles:['tank','dps']},
+  {id:'paladin', n:'Paladin',   c:'#F48CBA', ic:'classicon_paladin.jpg', roles:['tank','heal','dps'], note:'Un paladin ne pose qu’une bénédiction par cible : plusieurs paladins = plusieurs bénédictions.'},
+  {id:'hunter',  n:'Chasseur',  c:'#AAD372', ic:'classicon_hunter.jpg',  roles:['dps']},
+  {id:'rogue',   n:'Voleur',    c:'#FFF468', ic:'classicon_rogue.jpg',   roles:['dps'], note:'Pas de buff de groupe : le voleur apporte des dégâts, du contrôle et des débuffs.'},
+  {id:'priest',  n:'Prêtre',    c:'#FFFFFF', ic:'classicon_priest.jpg',  roles:['heal','dps']},
+  {id:'shaman',  n:'Chaman',    c:'#0070DD', ic:'classicon_shaman.jpg',  roles:['heal','dps'], note:'Les totems ne touchent que le groupe du chaman.'},
+  {id:'mage',    n:'Mage',      c:'#3FC7EB', ic:'classicon_mage.jpg',    roles:['dps']},
+  {id:'warlock', n:'Démoniste', c:'#8788EE', ic:'classicon_warlock.jpg', roles:['dps']},
+  {id:'druid',   n:'Druide',    c:'#FF7C0A', ic:'classicon_druid.jpg',   roles:['tank','heal','dps']},
+];
+const ROLES = {
+  tank:{n:'Tank', ic:'ability_warrior_defensivestance.jpg'},
+  heal:{n:'Soigneur', ic:'spell_holy_holybolt.jpg'},
+  dps: {n:'DPS', ic:'ability_dualwield.jpg'},
+};
+const FACTIONS = {A:{n:'Alliance', ic:'f132486.webp'}, H:{n:'Horde', ic:'f132485.webp'}};
+// Tableau officiel Blizzard (news.blizzard.com, sept. 2026)
+const RACES = [
+  {id:'human', f:'A', n:'Humain', ic:'race_human_male.jpg', cls:['hunter','mage','paladin','priest','rogue','warlock','warrior'],
+   rac:[['Volonté de survie','Supprime les étourdissements.'],['Perception','Détecte les ennemis camouflés pendant 20 s.'],['Spécialisation Épée','Épées : +2 % de critique des sorts et techniques.'],['Esprit humain','Esprit +5 %.']]},
+  {id:'dwarf', f:'A', n:'Nain', ic:'race_dwarf_male.jpg', cls:['hunter','paladin','priest','rogue','shaman','warrior'],
+   rac:[['Forme de pierre','Immunité aux saignements, poisons et maladies, dégâts physiques réduits pendant 8 s.'],['Découverte de trésors','Piste les coffres proches.'],['Spécialisation Masse','Masses : +1 % de critique des sorts et techniques.'],['Big Game Hunter','Dégâts contre les bêtes +5 %.']]},
+  {id:'nightelf', f:'A', n:'Elfe de la nuit', ic:'race_nightelf_male.jpg', cls:['druid','hunter','priest','rogue','warrior'],
+   rac:[['Elune’s Light','+10 % de chances de critique pendant 15 s.'],['Camouflage dans l’ombre','Camouflé tant que vous restez immobile.'],['Vivacité','Esquive +1 %, vitesse de course +2 %.'],['Esprit feu follet','Vitesse +75 % une fois mort.']]},
+  {id:'gnome', f:'A', n:'Gnome', ic:'race_gnome_male.jpg', cls:['mage','priest','rogue','warlock','warrior'],
+   rac:[['Maître de l’évasion','Brève immunité aux immobilisations et ralentissements.'],['Eureka!','Coût réduit et +10 % de dégâts ou de soins sur les 3 prochains sorts ou techniques.'],['Expansive Mind','Mana, rage ou énergie maximum +5 %.'],['Spécialisation Ingénierie','Gadgets d’ingénierie plus fiables.']]},
+  {id:'skyborne_a', f:'A', n:'Skyborne', sub:'High Order', ic:'f236219.webp', cls:['druid','hunter','mage','rogue','warrior'],
+   rac:[['Walk on Air','Planez vers le bas pendant 10 s.'],['Read Ley Line','Active une ligne tellurique : régénération de vie et de mana +100 %.'],['Wind Blessed','Hâte +1 % en mêlée, à distance et en incantation.'],['Elemental Insight','Dégâts contre les élémentaires +5 %.']]},
+  {id:'orc', f:'H', n:'Orc', ic:'race_orc_male.jpg', cls:['hunter','mage','rogue','shaman','warlock','warrior'],
+   rac:[['Fureur sanguinaire','Puissance d’attaque et des sorts +10 % pendant 15 s.'],['Shatter Curse','Immunité aux malédictions et fléaux, dégâts magiques subis réduits pendant 8 s.'],['Spécialisation Hache','Haches : +1 % de critique des sorts et techniques.'],['Robustesse','Durée des étourdissements −20 %.']]},
+  {id:'undead', f:'H', n:'Mort-vivant', ic:'race_scourge_male.jpg', cls:['mage','paladin','priest','rogue','warlock','warrior'],
+   rac:[['Volonté des Réprouvés','Supprime charme, peur et sommeil.'],['Cannibalisme','Dévore un cadavre pour rendre 35 % de vie et de mana.'],['Respiration aquatique','Respiration sous l’eau +300 %.'],['Touch of the Grave','Vos attaques drainent parfois de la vie.']]},
+  {id:'tauren', f:'H', n:'Tauren', ic:'race_tauren_male.jpg', cls:['druid','hunter','shaman','warrior'],
+   rac:[['Choc martial','Étourdit les ennemis proches pendant 2 s.'],['Cultivation','Fait pousser des herbes récoltables sans Herboristerie.'],['Plainsrunning','Vitesse accrue à mesure que vous restez en mouvement.'],['Endurance','Vie maximum +5 %, toucher +1 %.']]},
+  {id:'troll', f:'H', n:'Troll', ic:'race_troll_male.jpg', cls:['hunter','mage','priest','rogue','shaman','warlock','warrior'],
+   rac:[['Berserker','Vitesse d’incantation et d’attaque +10 % pendant 10 s.'],['Rapid Regeneration','Rend 50 % de la vie maximum sur la durée.'],['Tueur de bêtes','Dégâts contre les bêtes +5 %.'],['Régénération','10 % de la régénération de vie continue en combat.']]},
+  {id:'skyborne_h', f:'H', n:'Skyborne', sub:'Windshaper', ic:'f1029587.webp', cls:['druid','hunter','rogue','shaman','warrior'],
+   rac:[['Walk on Air','Planez vers le bas pendant 10 s.'],['Skysight','Bénédiction élémentaire : vitesse de course +10 %.'],['Wind Blessed','Hâte +1 % en mêlée, à distance et en incantation.'],['Elemental Insight','Dégâts contre les élémentaires +5 %.']]},
+];
+// Objets de camp : [nom (bêta, en anglais), compétence requise, icône, effet]
+const PROFS = [
+  {id:'alchemy', n:'Alchimie', ic:'trade_alchemy.jpg', slot:'mp5', bonus:'Mana toutes les 5 s',
+   objs:[['Mana Well',20,'f135738.webp','Buff de mana'],['Fermenter',140,'f3566827.webp','Crée certains réactifs'],['Alchemy Laboratory',300,'f4777830.webp','Requis pour les recettes avancées']]},
+  {id:'blacksmithing', n:'Forge', ic:'trade_blacksmithing.jpg', slot:'str', bonus:'Force',
+   objs:[['Sharpening Wheel',20,'f135243.webp','Buff de Force'],['Anvil',140,'f1020356.webp','Enclume utilisable'],['Master Forge',300,'f4374708.webp','Recettes qui exigent une forge']]},
+  {id:'enchanting', n:'Enchantement', ic:'trade_engraving.jpg', slot:'motw', bonus:'Armure, caractéristiques et résistances',
+   objs:[['Enchanted Lute',20,'f4631367.webp','Buff façon Marque du fauve'],['Arcane Salvager',140,'f986482.webp','Améliore le désenchantement'],['Arcane Forge',300,'f3622205.webp','Recettes avancées']]},
+  {id:'engineering', n:'Ingénierie', ic:'trade_engineering.jpg', util:'repair', bonus:'Vendeur de réactifs, puis réparations',
+   objs:[['Reagent Bot',20,'f133871.webp','Vend des réactifs'],['Repair Bot',140,'f1336885.webp','Répare l’équipement'],['Anarchist’s Workbench',300,'f4624728.webp','Recettes avancées']]},
+  {id:'herbalism', n:'Herboristerie', ic:'spell_nature_naturetouchgrow.jpg', slot:'int', bonus:'Intelligence',
+   objs:[['Incense Candle',20,'f133751.webp','Buff d’Intelligence'],['Greenhouse',140,'f134188.webp','Fait pousser des herbes à partir de graines'],['Seed Hybridizer',300,'f656440.webp','Multiplie et croise les graines']]},
+  {id:'leatherworking', n:'Travail du cuir', ic:'inv_misc_armorkit_17.jpg', util:'rested', bonus:'XP reposée jusqu’à 5 % d’un niveau',
+   objs:[['Camp Tent',20,'f134250.webp','XP reposée'],['Tanning Rack',140,'f4559256.webp','Crée certains réactifs'],['Sewing Machine',300,'f3622223.webp','Recettes avancées']]},
+  {id:'mining', n:'Minage', ic:'trade_mining.jpg', slot:'ap', bonus:'Puissance d’attaque en mêlée',
+   objs:[['Lodestone',20,'f134419.webp','Buff de puissance d’attaque'],['Rock Garden',140,'f134385.webp','Fait apparaître un filon commun'],['Molten Foundry',300,'f5931157.webp','Recettes avancées']]},
+  {id:'skinning', n:'Dépeçage', ic:'inv_misc_pelt_wolf_01.jpg', slot:'crit', bonus:'+2 % de coups critiques',
+   objs:[['Camp Chair',20,'f132761.webp','Buff de critique'],['Field Guide',140,'f133735.webp','Donne Pistage des bêtes'],['Trapper’s Workbench',300,'f5948139.webp','Contient un piège']]},
+  {id:'tailoring', n:'Couture', ic:'trade_tailoring.jpg', slot:'spirit', bonus:'Esprit',
+   objs:[['Faction Banner',20,'f132484.webp','Buff d’Esprit'],['Spinning Wheel',140,'f4777839.webp','Crée certains réactifs'],['Loom',300,'f2067081.webp','Recettes avancées']]},
+];
+const SECS = [
+  {id:'cooking', n:'Cuisine', ic:'inv_misc_food_15.jpg', fire:true, bonus:'Pose le feu de camp lui-même',
+   objs:[['Basic Campfire',1,'f135805.webp','3 objets autour du feu'],['Journeyman Campfire',90,'f135805.webp','5 objets'],['Expert Campfire',200,'f135805.webp','10 objets']],
+   extra:'Plus tard : Cookie’s Feast (nourriture d’Endurance pour le camp) et Iron Oven.'},
+  {id:'firstaid', n:'Secourisme', ic:'spell_holy_sealofsacrifice.jpg', slot:'stam', bonus:'Endurance',
+   objs:[['First Aid Kit',20,'f133681.webp','Buff d’Endurance'],['Toxin Study',140,'f463860.webp','En cours de test sur la bêta'],['Plague Doctor’s Laboratory',300,'f4626285.webp','En cours de test sur la bêta']]},
+  {id:'fishing', n:'Pêche', ic:'trade_fishing.jpg', slot:'kings', bonus:'+8 % à toutes les caractéristiques',
+   objs:[['Fish Bowl',20,'f4777763.webp','Buff de caractéristiques'],['Fishing Rack',140,'f1053359.webp','Poissons peu communs et appâts'],['Fishing Hut',300,'f132930.webp','Poissons rares']]},
+];
+// Buffs de classe. t: buff | debuff | util. slot = exclusif avec un buff de camp.
+const BUFFS = {
+  warrior:[
+    {n:'Cri de guerre', ic:'ability_warrior_battleshout.jpg', d:'Puissance d’attaque pour le groupe.', key:1},
+    {n:'Fracasser armure', ic:'ability_warrior_sunder.jpg', d:'Réduit l’armure de la cible.', t:'debuff', key:1},
+    {n:'Cri démoralisant', ic:'ability_warrior_warcry.jpg', d:'Réduit la puissance d’attaque des ennemis.', t:'debuff'},
+  ],
+  paladin:[
+    {n:'Bénédiction des rois', ic:'f135995.webp', d:'+10 % à toutes les caractéristiques.', slot:'kings', talent:1},
+    {n:'Bénédiction de puissance', ic:'f135906.webp', d:'Puissance d’attaque.', slot:'ap'},
+    {n:'Bénédiction de sagesse', ic:'f135970.webp', d:'Mana toutes les 5 s.', slot:'mp5'},
+    {n:'Bénédiction de salut', ic:'spell_holy_sealofsalvation.jpg', d:'Réduit la menace générée : précieux pour les DPS en raid.', key:1},
+    {n:'Bénédiction de lumière', ic:'spell_holy_prayerofhealing02.jpg', d:'Augmente les soins reçus des sorts de Lumière.'},
+    {n:'Aura de dévotion', ic:'spell_holy_devotionaura.jpg', d:'Armure pour le groupe.'},
+    {n:'Aura de concentration', ic:'spell_holy_mindsooth.jpg', d:'Les dégâts interrompent moins les sorts.'},
+    {n:'Aura de vindicte', ic:'spell_holy_auraoflight.jpg', d:'Dégâts du Sacré infligés aux attaquants.'},
+  ],
+  hunter:[
+    {n:'Aura de précision', ic:'ability_trueshot.jpg', d:'Puissance d’attaque pour le groupe (spé Précision).', talent:1, key:1},
+    {n:'Aspect de la meute', ic:'ability_mount_whitetiger.jpg', d:'+30 % de vitesse de déplacement pour le groupe hors combat.', t:'util'},
+    {n:'Aspect de la nature', ic:'spell_nature_protectionformnature.jpg', d:'Résistance à la Nature pour le groupe.'},
+  ],
+  rogue:[
+    {n:'Exposer l’armure', ic:'ability_warrior_riposte.jpg', d:'Réduit fortement l’armure de la cible.', t:'debuff'},
+    {n:'Assommer', ic:'ability_sap.jpg', d:'Contrôle hors combat pour démonter les packs en donjon.', t:'util', key:1},
+  ],
+  priest:[
+    {n:'Mot de pouvoir : Robustesse', ic:'f135987.webp', d:'Endurance pour chaque allié (Prière de robustesse en raid).', slot:'stam'},
+    {n:'Esprit divin', ic:'f135898.webp', d:'Esprit pour chaque allié (spé Discipline).', slot:'spirit', talent:1},
+    {n:'Protection contre l’Ombre', ic:'spell_shadow_antishadow.jpg', d:'Résistance à l’Ombre.'},
+    {n:'Résurrection', ic:'spell_holy_resurrection.jpg', d:'Relève un allié mort hors combat.', t:'util'},
+  ],
+  shaman:[
+    {n:'Totem de force de la terre', ic:'f136023.webp', d:'Force pour le groupe.', slot:'str'},
+    {n:'Totem Furie-des-vents', ic:'spell_nature_windfury.jpg', d:'Attaques supplémentaires en mêlée.', key:1},
+    {n:'Totem de grâce aérienne', ic:'spell_nature_invisibilitytotem.jpg', d:'Agilité pour le groupe.'},
+    {n:'Totem Fontaine de mana', ic:'spell_nature_manaregentotem.jpg', d:'Régénération de mana pour le groupe.', key:1},
+    {n:'Totem de tranquillité de l’air', ic:'spell_nature_brilliance.jpg', d:'Réduit la menace générée.'},
+    {n:'Totem de séisme', ic:'spell_nature_tremortotem.jpg', d:'Supprime peur, charme et sommeil.', t:'util'},
+    {n:'Totems de résistance', ic:'spell_fireresistancetotem_01.jpg', d:'Résistance au Feu, au Givre ou à la Nature.'},
+    {n:'Réincarnation', ic:'spell_nature_reincarnation.jpg', d:'Se relève seul après une mort.', t:'util'},
+  ],
+  mage:[
+    {n:'Intelligence des Arcanes', ic:'f135932.webp', d:'Intelligence pour chaque allié (Illumination des Arcanes en raid).', slot:'int'},
+    {n:'Amplification de la magie', ic:'spell_holy_flashheal.jpg', d:'Plus de soins reçus, mais plus de dégâts magiques subis.'},
+    {n:'Atténuation de la magie', ic:'spell_nature_abolishmagic.jpg', d:'Moins de dégâts magiques subis, mais moins de soins reçus.'},
+    {n:'Eau et nourriture invoquées', ic:'inv_drink_18.jpg', d:'Le groupe n’achète plus de quoi boire.', t:'util', key:1},
+    {n:'Portails', ic:'spell_arcane_portalorgrimmar.jpg', d:'Téléporte le groupe vers les capitales.', t:'util', key:1},
+    {n:'Délivrance de la malédiction mineure', ic:'spell_nature_removecurse.jpg', d:'Dissipe les malédictions.', t:'util'},
+  ],
+  warlock:[
+    {n:'Pacte de sang', ic:'spell_shadow_bloodboil.jpg', d:'Endurance pour le groupe, via le diablotin.'},
+    {n:'Rituel d’invocation', ic:'spell_shadow_twilight.jpg', d:'Invoque les retardataires à l’entrée du donjon.', t:'util', key:1},
+    {n:'Pierre d’âme', ic:'inv_misc_orb_04.jpg', d:'Permet de se relever après la mort : l’assurance anti-wipe.', t:'util', key:1},
+    {n:'Pierre de soins', ic:'inv_stone_04.jpg', d:'Soin d’urgence pour chaque membre du groupe.', t:'util'},
+    {n:'Respiration interminable', ic:'spell_shadow_demonbreath.jpg', d:'Respiration sous l’eau illimitée.', t:'util'},
+    {n:'Malédiction des éléments', ic:'spell_shadow_chilltouch.jpg', d:'La cible subit plus de dégâts de Feu et de Givre.', t:'debuff'},
+    {n:'Malédiction de l’ombre', ic:'spell_shadow_curseofachimonde.jpg', d:'La cible subit plus de dégâts d’Ombre et d’Arcanes.', t:'debuff'},
+  ],
+  druid:[
+    {n:'Marque du fauve', ic:'f136078.webp', d:'Armure, caractéristiques et résistances (Don du fauve en raid).', slot:'motw'},
+    {n:'Aura de sélénien', ic:'f136036.webp', d:'Critique des sorts pour le groupe (forme de sélénien).', slot:'crit', talent:1},
+    {n:'Chef de la meute', ic:'spell_nature_unyeildingstamina.jpg', d:'Critique en mêlée et à distance pour le groupe (spé Farouche).', talent:1},
+    {n:'Épines', ic:'spell_nature_thorns.jpg', d:'Dégâts de Nature infligés aux attaquants : parfait sur le tank.'},
+    {n:'Innervation', ic:'spell_nature_lightning.jpg', d:'Régénération de mana massive sur un soigneur.', t:'util', key:1},
+    {n:'Renaissance', ic:'spell_nature_reincarnation.jpg', d:'Résurrection en combat.', t:'util', key:1},
+  ],
+};
+// Buffs de classe exclusifs avec un buff de camp (ils ne se cumulent pas)
+const SLOTS = [
+  {id:'stam',   n:'Endurance',                     cls:'priest',  buff:'Mot de pouvoir : Robustesse', prof:'firstaid'},
+  {id:'int',    n:'Intelligence',                  cls:'mage',    buff:'Intelligence des Arcanes',    prof:'herbalism'},
+  {id:'motw',   n:'Armure, caracs et résistances', cls:'druid',   buff:'Marque du fauve',             prof:'enchanting'},
+  {id:'kings',  n:'% de caractéristiques',         cls:'paladin', buff:'Bénédiction des rois',        prof:'fishing', talent:1},
+  {id:'ap',     n:'Puissance d’attaque',           cls:'paladin', buff:'Bénédiction de puissance',    prof:'mining'},
+  {id:'mp5',    n:'Mana toutes les 5 s',           cls:'paladin', buff:'Bénédiction de sagesse',      prof:'alchemy'},
+  {id:'str',    n:'Force',                         cls:'shaman',  buff:'Totem de force de la terre',  prof:'blacksmithing'},
+  {id:'spirit', n:'Esprit',                        cls:'priest',  buff:'Esprit divin',                prof:'tailoring', talent:1},
+  {id:'crit',   n:'Critique',                      cls:'druid',   buff:'Aura de sélénien',            prof:'skinning', talent:1},
+];
+const GATHER = [['blacksmithing','mining','le minerai'],['engineering','mining','le minerai'],['alchemy','herbalism','les herbes'],['leatherworking','skinning','le cuir']];
+const EXAMPLE = [
+  {id:'ex1', manual:true, name:'Brakka', race:'orc', cls:'warrior', role:'tank', prof:['blacksmithing','mining'], sec:['firstaid']},
+  {id:'ex2', manual:true, name:'Sélène', race:'troll', cls:'priest', role:'heal', prof:['alchemy','herbalism'], sec:['cooking']},
+  {id:'ex3', manual:true, name:'Mordrec', race:'undead', cls:'warlock', role:'dps', prof:['tailoring','enchanting'], sec:['cooking','fishing']},
+  {id:'ex4', manual:true, name:'Ailevent', race:'skyborne_h', cls:'druid', role:'dps', prof:['leatherworking','skinning'], sec:[]},
+];
+
+const C = Object.fromEntries(CLASSES.map(c=>[c.id,c]));
+const R = Object.fromEntries(RACES.map(r=>[r.id,r]));
+const ALLP = [...PROFS, ...SECS];
+const P = Object.fromEntries(ALLP.map(p=>[p.id,p]));
+
+/* ============ Helpers ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ico = (f, alt='', cls='') => `<img class="ico ${cls}" src="icons/${f}" alt="${esc(alt)}" title="${esc(alt)}" width="36" height="36">`;
+const store = {
+  get(k){ try{ return localStorage.getItem(k) }catch(e){ return null } },
+  set(k,v){ try{ localStorage.setItem(k,v) }catch(e){} },
+};
+const plural = (n, one, many) => `${n} ${n>1?many:one}`;
+
+/* ============ État ============ */
+let sb = null;             // client Supabase
+let authUser = null, myId = null, isAdmin = false;
+let live = false;          // données partagées reçues
+let offline = false;       // Supabase pas configuré : mode démo
+let guest = false;         // configuré mais pas connecté
+let roster = [];
+let target = 'me';         // 'me' | id d'une fiche manuelle | 'new'
+let dirty = false;
+let draft = blankDraft();
+let saveMsg = {t:'', ok:true};
+
+function blankDraft(){ return {race:null, cls:null, role:null, prof:[], sec:[], char:'', name:''} }
+function list(){ return live ? roster : (offline ? EXAMPLE : []) }
+
+/* ============ Analyse du groupe ============ */
+function analyze(rs){
+  const cnt = Object.fromEntries(CLASSES.map(c=>[c.id,0]));
+  const roles = {tank:0, heal:0, dps:0}, fac = {A:0, H:0};
+  const pp = Object.fromEntries(ALLP.map(p=>[p.id,[]]));
+  rs.forEach(r=>{
+    if (C[r.cls]) cnt[r.cls]++;
+    if (roles[r.role] !== undefined) roles[r.role]++;
+    const f = R[r.race]?.f; if (f) fac[f]++;
+    [...(r.prof||[]), ...(r.sec||[])].forEach(p => pp[p] && pp[p].push(r));
+  });
+  const slots = SLOTS.map(s=>{
+    const byClass = cnt[s.cls] > 0, byCamp = pp[s.prof].length > 0;
+    return {...s, byClass, byCamp, state: byClass && byCamp ? 'both' : byClass ? 'class' : byCamp ? 'camp' : 'none'};
+  });
+  const issues = [];
+  if (rs.length){
+    if (fac.A && fac.H) issues.push({lv:'bad', t:`Factions mélangées : ${fac.A} Alliance et ${fac.H} Horde. Impossible de grouper entre factions.`, ics:[FACTIONS.A.ic, FACTIONS.H.ic]});
+    if (!roles.tank) issues.push({lv:'bad', t:'Aucun tank. Guerrier, Paladin ou Druide peuvent tanker.', ics:[ROLES.tank.ic]});
+    if (!roles.heal) issues.push({lv:'bad', t:'Aucun soigneur. Prêtre, Paladin, Chaman ou Druide peuvent soigner.', ics:[ROLES.heal.ic]});
+    if (!pp.cooking.length) issues.push({lv:'bad', t:'Personne ne prend Cuisine : sans elle, pas de feu de camp, donc aucun buff de camp.', ics:[P.cooking.ic]});
+    slots.filter(s=>s.state==='none').forEach(s=>{
+      issues.push({lv:'warn', t:`${s.n} : ni ${C[s.cls].n} (${s.buff}), ni ${P[s.prof].n} pour le camp.`, ics:[buffIcon(s), P[s.prof].ic]});
+    });
+    GATHER.forEach(([craft, gather, what])=>{
+      if (pp[craft].length && !pp[gather].length) issues.push({lv:'info', t:`${P[craft].n} sans ${P[gather].n} : il faudra acheter ${what}.`, ics:[P[craft].ic, P[gather].ic]});
+    });
+    CLASSES.filter(c=>!cnt[c.id]).forEach(c=>{
+      const keys = BUFFS[c.id].filter(b=>b.key).map(b=>b.n);
+      if (keys.length) issues.push({lv:'info', t:`Pas de ${c.n} : ${keys.join(', ')}.`, ics:[c.ic], cc:c.c});
+    });
+    const free = PROFS.filter(p=>!pp[p.id].length).map(p=>p.n);
+    if (free.length) issues.push({lv:'info', t:`Métiers que personne ne fait : ${free.join(', ')}.`});
+  }
+  return {cnt, roles, fac, pp, slots, issues};
+}
+function buffIcon(s){ return BUFFS[s.cls].find(b=>b.slot===s.id).ic }
+function campOpts(r){ return [...(r.prof||[]), ...(r.sec||[])].filter(p=>P[p] && !P[p].fire).length }
+function planCamp(A){
+  const val = p => {
+    if (p.slot){ const s = A.slots.find(x=>x.id===p.slot); return s.byClass ? 1 : 10; }
+    return p.util==='repair' ? 6 : p.util==='rested' ? 5 : 0;
+  };
+  const cands = ALLP.filter(p=>!p.fire && A.pp[p.id].length).map(p=>({p, v:val(p)})).filter(x=>x.v>0).sort((a,b)=>b.v-a.v);
+  const used = new Set(), out = [];
+  for (const {p, v} of cands){
+    const pl = A.pp[p.id].filter(r=>!used.has(r.id)).sort((a,b)=>campOpts(a)-campOpts(b))[0];
+    if (!pl) continue;
+    used.add(pl.id); out.push({p, v, pl});
+    if (out.length >= 10) break;
+  }
+  return out;
+}
+
+/* ============ Identité ============ */
+function mine(r){ return !!myId && r.user_id === myId }
+function who(r){
+  if (r.manual) return r.name || 'Joueur';
+  return r.display_name || (mine(r) ? 'Vous' : 'Aventurier');
+}
+const safeUrl = u => /^https:\/\//.test(u || '') ? u : '';
+function avatar(r){
+  const url = !r.manual && safeUrl(r.avatar_url);
+  if (url) return `<img class="avatar" src="${esc(url)}" alt="" referrerpolicy="no-referrer">`;
+  return `<span class="avatar" aria-hidden="true">${esc((who(r)[0]||'?').toUpperCase())}</span>`;
+}
+function discordProfile(u){
+  const m = (u && u.user_metadata) || {};
+  return {
+    display_name: String((m.custom_claims && m.custom_claims.global_name) || m.full_name || m.name || m.user_name || 'Aventurier').slice(0,80),
+    avatar_url: safeUrl(m.avatar_url) || null,
+  };
+}
+function renderAuth(){
+  const el = $('#auth');
+  if (!sb || !sessionKnown){ el.innerHTML = ''; return; }
+  if (!authUser){ el.innerHTML = `<button class="btn discord sm" data-login="1">Se connecter avec Discord</button>`; return; }
+  const p = discordProfile(authUser);
+  el.innerHTML = `<span class="me">${p.avatar_url?`<img class="avatar" src="${esc(p.avatar_url)}" alt="" referrerpolicy="no-referrer">`:''}${esc(p.display_name)}</span><button class="btn ghost sm" data-logout="1">Déconnexion</button>`;
+}
+
+/* ============ Rendu : groupe ============ */
+function renderGroup(){
+  const rs = list(), A = analyze(rs), el = $('#tab-groupe');
+  if (guest){
+    el.innerHTML = `<div class="panel empty-state"><h3>Connecte-toi pour voir le groupe</h3><p>La liste des personnages est réservée aux membres connectés. L’onglet « Buffs &amp; camp » reste consultable.</p><p style="margin-top:14px"><button class="btn discord" data-login="1">Se connecter avec Discord</button></p></div>`;
+    return;
+  }
+  if (!live && !offline){
+    el.innerHTML = `<div class="panel empty-state"><h3>Connexion au groupe…</h3><p>Chargement des personnages de tout le monde.</p></div>`;
+    return;
+  }
+  const facTxt = !rs.length ? '—' : (A.fac.A && A.fac.H) ? 'Mélangée' : A.fac.A ? 'Alliance' : A.fac.H ? 'Horde' : '—';
+  const need = (n, k) => `<div class="need-row"><span class="dot ${n? '':'bad'}"></span><small>${k}</small></div>`;
+  const plan = planCamp(A);
+  const sockets = [];
+  const tiers = [[0,3,'Feu de base','Cuisine 1 · 3 places'],[3,5,'Feu de compagnon','Cuisine 90 · +2 places'],[5,10,'Feu expert','Cuisine 200 · +5 places']];
+  tiers.forEach(([a,b,label,sub])=>{
+    sockets.push(`<div class="tier-label">${label} <span>${sub}</span></div>`);
+    for (let i=a;i<b;i++){
+      const s = plan[i];
+      if (!s){ sockets.push(`<div class="socket empty">Place libre</div>`); continue; }
+      const o = s.p.objs[0];
+      sockets.push(`<div class="socket">${ico(o[2], o[0])}<div><b>${esc(o[0])} ${s.v===1?'<span class="tag grey">doublon</span>':''}</b><small>${esc(s.p.bonus)}</small><small>${esc(P[s.p.id].n)} · ${esc(who(s.pl))}</small></div></div>`);
+    }
+  });
+
+  el.innerHTML = `
+    <div>
+      <div class="sec-head"><h2>Qui joue quoi</h2>${!rs.length?'':`<p>Groupe de donjon type : 1 tank, 1 soigneur, 3 DPS.</p>`}</div>
+      <div class="summary">
+        <div><span class="eyebrow">Joueurs</span><strong>${rs.length}</strong><small>Faction : ${facTxt}</small></div>
+        <div><span class="eyebrow">Tanks</span><strong>${A.roles.tank}</strong>${need(A.roles.tank,'1 par groupe')}</div>
+        <div><span class="eyebrow">Soigneurs</span><strong>${A.roles.heal}</strong>${need(A.roles.heal,'1 par groupe')}</div>
+        <div><span class="eyebrow">DPS</span><strong>${A.roles.dps}</strong>${need(A.roles.dps>=3,'3 par groupe')}</div>
+        <div><span class="eyebrow">Buffs couverts</span><strong>${A.slots.filter(s=>s.state!=='none').length}/${A.slots.length}</strong><small>par classe ou par le camp</small></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Ce qu’il nous manque</h2><p>Recalculé à chaque inscription.</p></div>
+      <div class="panel issues">${
+        !rs.length ? `<div class="empty-state"><h3>Personne n’est encore inscrit</h3><p>Ouvre l’onglet « Mon perso » pour choisir ta race, ta classe et tes métiers.</p><p style="margin-top:14px"><button class="btn" data-go="perso">Choisir mon perso</button></p></div>`
+        : A.issues.length ? A.issues.map(i=>`<div class="issue" ${i.cc?`style="--cc:${i.cc}"`:''}><span class="lv ${i.lv}">${{bad:'Bloquant',warn:'Buff absent',info:'À savoir'}[i.lv]}</span><span class="ics">${(i.ics||[]).map(f=>ico(f,'','sm')).join('')}</span><p>${esc(i.t)}</p></div>`).join('')
+        : `<div class="issue"><span class="lv ok">Complet</span><p>Rien ne manque : rôles, buffs et feu de camp sont couverts.</p></div>`
+      }</div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Classes</h2><p>Grisé : personne ne la joue.</p></div>
+      <div class="panel classrow">${CLASSES.map(c=>`<div class="c ${A.cnt[c.id]?'has':''}" style="--cc:${c.c}">${ico(c.ic,c.n,'lg cls'+(A.cnt[c.id]?'':' off'))}<span class="cname">${c.n}</span><em>${A.cnt[c.id]?plural(A.cnt[c.id],'joueur','joueurs'):'absent'}</em></div>`).join('')}</div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Notre feu de camp idéal</h2><p>Chaque joueur pose un seul objet. On place d’abord les buffs qu’aucune classe du groupe n’apporte, puis les réparations et l’XP reposée.</p></div>
+      <div class="panel camp"><div class="sockets">${sockets.join('')}</div></div>
+    </div>
+
+    <div>
+      <div class="sec-head"><h2>Personnages</h2>${rs.length?`<p>${plural(rs.length,'inscrit','inscrits')}</p>`:''}</div>
+      ${rs.length ? `<div class="roster">${[...rs].sort((a,b)=>CLASSES.findIndex(c=>c.id===a.cls)-CLASSES.findIndex(c=>c.id===b.cls)).map(card).join('')}</div>`
+        : `<div class="panel empty-state"><p>Les fiches apparaîtront ici.</p></div>`}
+    </div>`;
+}
+function card(r){
+  const c = C[r.cls], ra = R[r.race], ro = ROLES[r.role];
+  const main = r.char ? esc(r.char) : esc(who(r));
+  const secondLine = r.char ? esc(who(r)) : (ra ? esc(ra.n + (ra.sub?' · '+ra.sub:'')) : '');
+  const chips = (r.prof||[]).filter(p=>P[p]).map(p=>`<span class="pchip">${ico(P[p].ic,P[p].n,'sm')}${esc(P[p].n)}</span>`)
+    .concat((r.sec||[]).filter(p=>P[p]).map(p=>`<span class="pchip sec">${ico(P[p].ic,P[p].n,'sm')}${esc(P[p].n)}</span>`));
+  return `<article class="panel pc ${mine(r)?'me':''}" style="--cc:${c?c.c:'var(--line)'}">
+    <div class="pc-id">${avatar(r)}<div class="nm"><strong class="cname">${main}</strong><small>${secondLine}${mine(r)?' · vous':''}</small></div>${ra?`<span class="fac ${ra.f}">${FACTIONS[ra.f].n}</span>`:''}</div>
+    <div class="pc-main">${ra?ico(ra.ic,ra.n):''}${c?ico(c.ic,c.n,'cls'):''}<div class="txt"><b>${ra?esc(ra.n):''} ${c?esc(c.n):''}</b>${ra&&ra.sub?`<span>${esc(ra.sub)}</span>`:''}</div>${ro?`<span class="role"><img src="icons/${ro.ic}" alt="">${ro.n}</span>`:''}</div>
+    <div class="profs">${chips.length?chips.join(''):'<span class="pchip sec" style="padding-left:9px">Aucun métier choisi</span>'}</div>
+  </article>`;
+}
+
+/* ============ Rendu : buffs ============ */
+function renderBuffs(){
+  const rs = list(), A = analyze(rs), el = $('#tab-buffs');
+  const names = arr => arr.length ? `<div class="who">${arr.map(r=>`<span>${esc(r.char||who(r))}</span>`).join('')}</div>` : '<span class="tag red">Personne</span>';
+  const eqCell = p => {
+    if (!p.slot) return `<span class="tag grey">${p.fire?'Base du camp':'Utilitaire'}</span>`;
+    const s = A.slots.find(x=>x.id===p.slot);
+    const lbl = {none:'Manquant', class:'Classe seulement', camp:'Camp seulement', both:'Doublon'}[s.state];
+    return `<div class="obj">${ico(buffIcon(s), s.buff, 'sm')}<div>${esc(s.buff)}<small>${C[s.cls].n}${s.talent?' (talent)':''}</small></div></div><div style="margin-top:6px"><span class="state ${s.state}">${lbl}</span></div>`;
+  };
+  const row = p => `<tr>
+    <td><div class="obj">${ico(p.ic,p.n)}<div><b>${esc(p.n)}</b><small>${esc(p.bonus)}</small></div></div></td>
+    ${p.objs.map(o=>`<td><div class="obj">${ico(o[2],o[0],'sm')}<div>${esc(o[0])} <span class="lvl">${o[1]}</span><small>${esc(o[3])}</small></div></div></td>`).join('')}
+    <td>${eqCell(p)}</td>
+    <td>${names(A.pp[p.id])}</td>
+  </tr>`;
+  el.innerHTML = `
+    <div>
+      <div class="sec-head"><h2>Buffs de camping par métier</h2><p>Nouveauté de Forever : on pose un feu, chaque joueur y ajoute un objet de son métier, et on reste assis une minute pour obtenir des buffs d’une heure.</p></div>
+      <div class="rules">
+        <div><b>Un objet par joueur</b>Tous les objets de camp partagent un temps de recharge d’une heure. Un feu de base n’a que 3 places.</div>
+        <div><b>Pas de cumul</b>Chaque buff de camp remplace un buff de classe équivalent. Il sert à combler ce que le groupe n’a pas.</div>
+        <div><b>Paliers 20 / 140 / 300</b>Les paliers supérieurs gardent le buff et ajoutent un atelier. Certains plans tombent sur des boss de donjon.</div>
+        <div><b>La Cuisine fait le feu</b>Cuisine 1 : 3 places. Cuisine 90 : 5 places. Cuisine 200 : 10 places.</div>
+      </div>
+    </div>
+    <div class="panel tbl-wrap">
+      <table>
+        <thead><tr><th>Métier</th><th>Palier 1</th><th>Palier 2</th><th>Palier 3</th><th>Remplace le buff de classe</th><th>Dans le groupe</th></tr></thead>
+        <tbody>${PROFS.map(row).join('')}<tr><td colspan="6" class="eyebrow" style="padding-top:16px">Métiers secondaires</td></tr>${SECS.map(row).join('')}</tbody>
+      </table>
+    </div>
+    <div>
+      <div class="sec-head"><h2>Buffs de nos classes</h2><p>Les classes absentes du groupe sont atténuées.</p></div>
+      <div class="classes">${CLASSES.map(c=>{
+        const n = A.cnt[c.id];
+        return `<article class="panel ccard ${n?'':'absent'}" style="--cc:${c.c}">
+          <header>${ico(c.ic,c.n,'lg cls'+(n?'':' off'))}<h3 class="cname">${c.n}</h3><em>${n?plural(n,'joueur','joueurs'):'absent'}</em></header>
+          ${c.note?`<p class="note">${esc(c.note)}</p>`:''}
+          <div class="buffs">${BUFFS[c.id].map(b=>{
+            const s = b.slot && SLOTS.find(x=>x.id===b.slot);
+            const tags = [b.t==='debuff'?'<span class="tag grey">débuff</span>':'', b.t==='util'?'<span class="tag grey">utilitaire</span>':'', b.talent?'<span class="tag grey">talent</span>':''].join(' ');
+            return `<div class="buff">${ico(b.ic,b.n)}<div><b>${esc(b.n)}</b> ${tags}<p>${esc(b.d)}</p>${s?`<span class="eq">${ico(P[s.prof].objs[0][2],'','sm')}Ne se cumule pas avec ${esc(P[s.prof].n)} au camp</span>`:''}</div></div>`;
+          }).join('')}</div>
+        </article>`;
+      }).join('')}</div>
+    </div>`;
+}
+
+/* ============ Rendu : mon perso ============ */
+function renderPerso(){
+  const el = $('#tab-perso');
+  const manual = roster.filter(r=>r.manual);
+  const canPickTarget = live && isAdmin;
+  const d = draft, cls = d.cls && C[d.cls], race = d.race && R[d.race];
+  const roles = cls ? cls.roles : ['tank','heal','dps'];
+  const raceCol = f => `<div class="fcol ${f}"><h4>${ico(FACTIONS[f].ic,'','sm')}${FACTIONS[f].n}</h4><div class="tiles">${
+    RACES.filter(r=>r.f===f).map(r=>`<button class="tile ${d.cls && !r.cls.includes(d.cls)?'dim':''}" data-race="${r.id}" aria-pressed="${d.race===r.id}">${ico(r.ic,r.n)}<span>${r.n}${r.sub?`<small>${r.sub}</small>`:''}</span></button>`).join('')
+  }</div></div>`;
+  const canSave = live && !offline && d.race && d.cls && (target!=='new' || d.name.trim()) && (target!=='me' || myId);
+  let hint = '';
+  if (guest) hint = 'Connecte-toi avec Discord pour enregistrer ton perso.';
+  else if (!live) hint = offline ? 'Mode démo : le site n’est pas encore relié à sa base de données.' : 'Connexion…';
+  else if (!d.race || !d.cls) hint = 'Choisis au moins une race et une classe.';
+  else if (target==='new' && !d.name.trim()) hint = 'Indique le nom du joueur.';
+  const existing = docFor();
+
+  el.innerHTML = `<div class="form">
+    <div class="sec-head" style="margin:0"><h2>${target==='me'?'Mon personnage':'Fiche d’un joueur'}</h2><p>Choisis une race puis une classe, ou l’inverse : les combinaisons impossibles sont atténuées.</p></div>
+    ${canPickTarget ? `<div class="panel step"><div class="row">
+      <div class="field"><label for="target">Remplir la fiche de</label><select id="target">
+        <option value="me" ${target==='me'?'selected':''}>Moi</option>
+        ${manual.map(r=>`<option value="${esc(r.id)}" ${target===r.id?'selected':''}>${esc(r.name)}</option>`).join('')}
+        <option value="new" ${target==='new'?'selected':''}>Ajouter un ami sans compte…</option>
+      </select></div>
+      ${target!=='me' ? `<div class="field"><label for="manual-name">Nom du joueur</label><input id="manual-name" value="${esc(d.name)}" maxlength="40" placeholder="Pseudo de ton ami"></div>` : ''}
+    </div></div>` : ''}
+
+    <div class="panel step">
+      <h3>Race</h3><p>Les Skyborne existent dans les deux factions, avec des classes différentes.</p>
+      <div class="factions">${raceCol('A')}${raceCol('H')}</div>
+      ${race ? `<div class="racials">${race.rac.map(([n,t])=>`<div><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join('')}</div>` : ''}
+    </div>
+
+    <div class="panel step">
+      <h3>Classe</h3><p>${race ? `${race.n}${race.sub?' '+race.sub:''} peut jouer ${race.cls.length} classes sur 9.` : 'Toutes les classes sont jouables dans les deux factions.'}</p>
+      <div class="tiles">${CLASSES.map(c=>`<button class="tile ${d.race && !R[d.race].cls.includes(c.id)?'dim':''}" data-cls="${c.id}" aria-pressed="${d.cls===c.id}" style="--cc:${c.c}">${ico(c.ic,c.n,'cls')}<span class="cname">${c.n}</span></button>`).join('')}</div>
+    </div>
+
+    <div class="panel step">
+      <h3>Rôle</h3><p>${cls ? `Rôles possibles pour ${cls.n}.` : 'Choisis d’abord une classe pour voir ses rôles.'}</p>
+      <div class="tiles">${roles.map(k=>`<button class="tile" data-role="${k}" aria-pressed="${d.role===k}" ${cls?'':'disabled'}>${ico(ROLES[k].ic,ROLES[k].n)}<span>${ROLES[k].n}</span></button>`).join('')}</div>
+    </div>
+
+    <div class="panel step">
+      <h3>Métiers principaux <span class="tag">${d.prof.length}/2</span></h3><p>Deux au maximum. Sous chaque métier : ce qu’il pose au feu de camp dès 20 de compétence.</p>
+      <div class="tiles">${PROFS.map(p=>`<button class="tile wide" data-prof="${p.id}" aria-pressed="${d.prof.includes(p.id)}">${ico(p.ic,p.n)}<span>${p.n}<small>${esc(p.bonus)}</small></span></button>`).join('')}</div>
+    </div>
+
+    <div class="panel step">
+      <h3>Métiers secondaires</h3><p>Autant que tu veux. La Cuisine est la seule façon de poser un feu de camp.</p>
+      <div class="tiles">${SECS.map(p=>`<button class="tile wide" data-sec="${p.id}" aria-pressed="${d.sec.includes(p.id)}">${ico(p.ic,p.n)}<span>${p.n}<small>${esc(p.bonus)}</small></span></button>`).join('')}</div>
+    </div>
+
+    <div class="panel step">
+      <div class="field"><label for="char-name">Nom du personnage (facultatif)</label><input id="char-name" value="${esc(d.char)}" maxlength="24" placeholder="Si tu l’as déjà en tête"></div>
+    </div>
+
+    <div class="panel savebar">
+      <div class="recap">${race?ico(race.ic,race.n):''}${cls?`<span style="--cc:${cls.c};display:contents">${ico(cls.ic,cls.n,'cls')}</span>`:''}
+        <div><b>${race?esc(race.n):'Race ?'} ${cls?esc(cls.n):'· classe ?'}${d.role?' · '+ROLES[d.role].n:''}</b><span>${[...d.prof,...d.sec].map(p=>P[p].n).join(' · ') || 'Aucun métier'}</span></div>
+      </div>
+      ${saveMsg.t ? `<span class="status ${saveMsg.ok?'ok':'err'}" role="status">${esc(saveMsg.t)}</span>` : hint ? `<span class="status" style="color:var(--muted)">${esc(hint)}</span>` : ''}
+      ${existing && live ? `<button class="btn danger" id="remove">Retirer la fiche</button>` : ''}
+      <button class="btn" id="save" ${canSave?'':'disabled'}>${existing?'Mettre à jour':'Enregistrer'}</button>
+    </div>
+  </div>`;
+}
+
+function renderAll(){ renderGroup(); renderPerso(); renderBuffs(); }
+
+/* ============ Interactions ============ */
+function touch(){ dirty = true; saveMsg = {t:'', ok:true}; }
+document.addEventListener('click', e=>{
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.tab){ showTab(t.dataset.tab); return; }
+  if (t.dataset.go){ showTab(t.dataset.go); window.scrollTo({top:0}); return; }
+  const d = draft;
+  if (t.dataset.race){
+    const r = R[t.dataset.race]; touch();
+    d.race = d.race===r.id ? null : r.id;
+    if (d.race && d.cls && !r.cls.includes(d.cls)){ d.cls = null; d.role = null; }
+    renderPerso(); return;
+  }
+  if (t.dataset.cls){
+    const c = C[t.dataset.cls]; touch();
+    d.cls = d.cls===c.id ? null : c.id;
+    if (d.cls && d.race && !R[d.race].cls.includes(d.cls)) d.race = null;
+    d.role = d.cls ? (c.roles.includes(d.role) ? d.role : c.roles.length===1 ? c.roles[0] : null) : null;
+    renderPerso(); return;
+  }
+  if (t.dataset.role){ touch(); d.role = d.role===t.dataset.role ? null : t.dataset.role; renderPerso(); return; }
+  if (t.dataset.prof){
+    const id = t.dataset.prof; touch();
+    if (d.prof.includes(id)) d.prof = d.prof.filter(x=>x!==id);
+    else { d.prof = [...d.prof, id]; if (d.prof.length > 2) d.prof.shift(); }
+    renderPerso(); return;
+  }
+  if (t.dataset.sec){
+    const id = t.dataset.sec; touch();
+    d.sec = d.sec.includes(id) ? d.sec.filter(x=>x!==id) : [...d.sec, id];
+    renderPerso(); return;
+  }
+  if (t.dataset.login){ login(); return; }
+  if (t.dataset.logout){ sb && sb.auth.signOut(); return; }
+  if (t.id==='save'){ save(); return; }
+  if (t.id==='remove'){ removeDoc(t); return; }
+});
+document.addEventListener('input', e=>{
+  if (e.target.id==='char-name'){ draft.char = e.target.value; dirty = true; }
+  if (e.target.id==='manual-name'){
+    draft.name = e.target.value; dirty = true;
+    const btn = $('#save'); if (btn) btn.disabled = !(live && draft.race && draft.cls && draft.name.trim());
+  }
+});
+document.addEventListener('change', e=>{
+  if (e.target.id==='target'){ target = e.target.value; loadDraft(true); renderPerso(); }
+});
+
+function docFor(){ return target==='me' ? roster.find(mine) : roster.find(r=>r.id===target); }
+function loadDraft(force){
+  if (dirty && !force) return;
+  const r = target==='new' ? null : docFor();
+  draft = r ? {race:r.race||null, cls:r.cls||null, role:r.role||null, prof:[...(r.prof||[])], sec:[...(r.sec||[])], char:r.char||'', name:r.name||''} : blankDraft();
+  dirty = false; saveMsg = {t:'', ok:true};
+}
+
+let pendingRemove = false;
+async function removeDoc(btn){
+  if (!pendingRemove){ pendingRemove = true; btn.textContent = 'Confirmer le retrait'; return; }
+  pendingRemove = false;
+  const r = docFor(); if (!r || !sb) return;
+  const {error} = await sb.from('roster').delete().eq('id', r.id);
+  if (error) saveMsg = {t: writeError(error), ok:false};
+  else {
+    roster = roster.filter(x=>x.id!==r.id);
+    if (target!=='me') target = 'me';
+    loadDraft(true); saveMsg = {t:'Fiche retirée.', ok:true};
+    renderGroup(); renderBuffs();
+  }
+  renderPerso();
+}
+function writeError(err){
+  const code = err && err.code;
+  if (code==='42501' || /row-level security/i.test(err && err.message || '')) return 'Tu n’as pas le droit de modifier cette fiche.';
+  if (code==='23514') return 'Fiche refusée : une valeur n’est pas valide.';
+  if (/JWT|session/i.test(err && err.message || '')) return 'Ta session a expiré : reconnecte-toi.';
+  return 'Enregistrement impossible pour le moment, réessaie.';
+}
+let saving = false;
+async function save(){
+  if (saving || !sb || !authUser) return;
+  const d = draft;
+  if (!d.race || !d.cls) return;
+  const body = {race:d.race, cls:d.cls, role:d.role || (C[d.cls].roles.length===1 ? C[d.cls].roles[0] : null),
+    prof:d.prof, sec:d.sec, char_name:d.char.trim().slice(0,24) || null, updated_at:new Date().toISOString()};
+  saving = true; const btn = $('#save'); if (btn){ btn.disabled = true; btn.textContent = 'Enregistrement…'; }
+  let res;
+  if (target==='me'){
+    res = await sb.from('roster').upsert({...body, ...discordProfile(authUser), user_id:myId, manual:false}, {onConflict:'user_id'}).select().single();
+  } else if (target==='new'){
+    res = await sb.from('roster').insert({...body, manual:true, name:d.name.trim().slice(0,40)}).select().single();
+  } else {
+    res = await sb.from('roster').update({...body, name:d.name.trim().slice(0,40)}).eq('id', target).select().single();
+  }
+  saving = false;
+  if (res.error){ saveMsg = {t: writeError(res.error), ok:false}; }
+  else {
+    const row = fromDb(res.data);
+    roster = [...roster.filter(x=>x.id!==row.id), row];
+    if (target==='new') target = row.id;
+    dirty = false; saveMsg = {t:'Enregistré. Le groupe voit ta fiche.', ok:true};
+    renderGroup(); renderBuffs();
+  }
+  renderPerso();
+}
+
+/* ============ Onglets ============ */
+const TABS = ['groupe','perso','buffs'];
+function showTab(k){
+  if (!TABS.includes(k)) k = 'groupe';
+  TABS.forEach(t=>{
+    $('#tab-'+t).hidden = t!==k;
+    $('#tabbtn-'+t).setAttribute('aria-selected', String(t===k));
+  });
+  store.set('fdc-tab', k);
+}
+
+/* ============ Supabase ============ */
+function fromDb(x){
+  return {id:x.id, user_id:x.user_id, manual:x.manual, name:x.name, display_name:x.display_name, avatar_url:x.avatar_url,
+    race:x.race, cls:x.cls, role:x.role, prof:x.prof||[], sec:x.sec||[], char:x.char_name||''};
+}
+async function fetchRoster(){
+  const {data, error} = await sb.from('roster').select('*').order('updated_at');
+  if (error){ $('#banner').textContent = 'Impossible de charger le groupe. Recharge la page.'; return; }
+  roster = data.map(fromDb);
+  const first = !live; live = true;
+  if (first || !dirty) loadDraft(false);
+  renderGroup(); renderBuffs();
+  if (first || !dirty) renderPerso();   // ne pas effacer une saisie en cours
+}
+let channel = null, sessionKnown = false;
+async function onSession(session){
+  const u = session ? session.user : null, newId = u ? u.id : null;
+  // Rafraîchissement du jeton : même personne, rien à recharger
+  if (sessionKnown && newId === myId){ authUser = u; renderAuth(); return; }
+  sessionKnown = true;
+  authUser = u; myId = newId;
+  guest = !u; live = false; isAdmin = false; roster = []; target = 'me'; dirty = false;
+  renderAuth();
+  if (channel){ sb.removeChannel(channel); channel = null; }
+  if (!u){ loadDraft(true); renderAll(); return; }
+  renderAll();
+  const adm = await sb.from('admins').select('user_id').eq('user_id', myId).maybeSingle();
+  isAdmin = !!(adm.data);
+  await fetchRoster();
+  let t = null;
+  channel = sb.channel('roster-changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'roster'}, ()=>{ clearTimeout(t); t = setTimeout(fetchRoster, 300); })
+    .subscribe();
+}
+function login(){
+  if (!sb) return;
+  sb.auth.signInWithOAuth({provider:'discord', options:{redirectTo: location.origin + location.pathname}});
+}
+
+/* ============ Démarrage ============ */
+(function countdown(){
+  const days = Math.ceil((new Date(2026,10,4) - new Date()) / 864e5);
+  if (days > 0) $('#countdown').textContent = `J−${days} avant la sortie du 4 novembre`;
+  else if (days > -1) $('#countdown').textContent = 'Sortie aujourd’hui !';
+  else $('#countdown').textContent = 'Disponible depuis le 4 novembre 2026';
+})();
+showTab((location.hash||'').slice(1) || store.get('fdc-tab') || 'groupe');
+
+(function boot(){
+  const cfg = window.FDC_CONFIG || {};
+  if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase){
+    offline = true;
+    $('#banner').textContent = 'Mode démo avec des personnages d’exemple : le site n’est pas encore relié à sa base Supabase (voir config.js).';
+    renderAll(); return;
+  }
+  sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+  renderAll();
+  sb.auth.onAuthStateChange((_event, session)=>{ setTimeout(()=>onSession(session), 0); });
+})();
+</script>
+</body>
+</html>
