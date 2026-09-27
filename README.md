@@ -41,13 +41,17 @@ Dans **Project Settings → API**, copie la **Project URL** et la clé **anon pu
 
 ### 4. Te donner les droits d'admin
 
-Connecte-toi une première fois sur le site avec Discord, puis lance cette requête dans le SQL Editor :
+Connecte-toi sur le site avec Discord et enregistre ta fiche. Lance ensuite cette requête dans le SQL Editor, avec le pseudo affiché en haut à droite du site :
 
 ```sql
 insert into public.admins (user_id)
-select id from auth.users
-where raw_user_meta_data->>'full_name' = 'TON_PSEUDO_DISCORD';
+select user_id from public.roster
+where not manual and display_name ilike 'TON_PSEUDO'
+on conflict do nothing
+returning user_id;
 ```
+
+Si le résultat est vide, personne n'a été trouvé. La liste des pseudos enregistrés s'obtient avec `select display_name, user_id from public.roster where not manual;`.
 
 L'admin peut créer, dans l'onglet « Mon perso », la fiche d'un ami qui n'a pas Discord.
 
